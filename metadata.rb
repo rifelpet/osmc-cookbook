@@ -1,0 +1,7 @@
+name 'osmc-cookbook'
+maintainer 'Peter Rifel'
+maintainer_email 'pgrifel@gmail.com'
+license 'all_rights'
+description 'Installs/Configures OSMC on my raspberry pi'
+long_description 'Installs/Configures OSMC on my raspberry pi'
+version '0.1.0'
