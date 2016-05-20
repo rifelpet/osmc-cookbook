@@ -1,4 +1,4 @@
-name 'osmc-cookbook'
+name 'osmc'
 maintainer 'Peter Rifel'
 maintainer_email 'pgrifel@gmail.com'
 license 'all_rights'
