@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: osmc
-# Recipe:: default
+# Recipe:: authorized_key
 #
 directory '/home/osmc/.ssh' do
   owner 'osmc'
