@@ -1,0 +1,64 @@
+bash -c '
+<%= "export http_proxy=\"#{knife_config[:bootstrap_proxy]}\"" if knife_config[:bootstrap_proxy] -%>
+
+if [ -f /usr/bin/chef-client ]; then
+  exit 1
+else
+  tmp_dir=$(mktemp -d) || exit 1
+
+  export LANG=C
+  set -e
+  <%# Make sure /etc/apt/sources.list reflects correct repo, e.g. wheezy instead of squeeze %>
+  apt-get update
+  apt-get install -y ruby ruby-dev build-essential git
+  apt-get install -y ca-certificates wget
+
+  pushd ${tmp_dir}
+  wget <%= "--proxy=on " if knife_config[:bootstrap_proxy] %>https://rubygems.org/rubygems/rubygems-2.6.4.tgz
+  tar zxf rubygems-2.6.4.tgz
+  cd rubygems-2.6.4
+  ruby setup.rb --no-format-executable
+
+  popd
+  rm -r ${tmp_dir}
+fi
+
+gem update -N
+gem install ohai -N --verbose 
+gem install chef -N --verbose
+
+mkdir -p /etc/chef
+
+awk NF > /etc/chef/validation.pem <<'EOP'
+<%= validation_key %>
+EOP
+chmod 0600 /etc/chef/validation.pem
+
+<%# Generate Ohai Hints -%>
+<% unless @chef_config[:knife][:hints].nil? || @chef_config[:knife][:hints].empty? -%>
+mkdir -p /etc/chef/ohai/hints
+
+<% @chef_config[:knife][:hints].each do |name, hash| -%>
+cat > /etc/chef/ohai/hints/<%= name %>.json <<'EOP'
+<%= hash.to_json %>
+EOP
+<% end -%>
+<% end -%>
+
+<%# Run chef-client from cron every 15 minutes with a 10 minute splay %>
+cat > /etc/cron.d/chef_run << 'EOP'
+*/15 * * * * root /usr/bin/find /var/chef -maxdepth 1 -name cron.default.override -mmin +30 -exec /bin/rm -f {} \;
+#MAILTO=""
+*/15 * * * * root /usr/bin/test -f /var/chef/cron.default.override || /usr/bin/chef-client -s 600
+EOP
+
+cat > /etc/chef/client.rb <<'EOP'
+<%= config_content %>
+EOP
+
+cat > /etc/chef/first-boot.json <<'EOP'
+<%= first_boot.to_json %>
+EOP
+
+<%= start_chef %>'
+
