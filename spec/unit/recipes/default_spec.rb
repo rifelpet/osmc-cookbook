@@ -12,7 +12,7 @@ describe 'osmc::default' do
       runner.converge(described_recipe)
     end
 
-    it 'converges successfully' do
+    it 'Converges successfully' do
       expect { chef_run.converge(described_recipe) }.to_not raise_error
     end
   end
