@@ -1,0 +1,8 @@
+<keymap>
+  <global>
+    <remote>
+      <red>VolumeDown</red>
+      <green>VolumeUp</green>
+    </remote>
+  </global>
+</keymap>
