@@ -3,7 +3,9 @@ require 'chefspec'
 describe 'osmc::utilities' do
   let(:chef_run) { ChefSpec::SoloRunner.converge(described_recipe) }
 
-  it 'Installs usbutils package' do
-    expect(chef_run).to install_package('usbutils')
+  %w(usbutils alsa-utils).each do |pkg|
+    it "Installs #{pkg} package" do
+      expect(chef_run).to install_package(pkg)
+    end
   end
 end
