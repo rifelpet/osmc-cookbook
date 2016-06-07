@@ -5,4 +5,10 @@
       <green>VolumeUp</green>
     </remote>
   </global>
+  <FullscreenVideo>
+    <remote>
+      <red>VolumeDown</red>
+      <green>VolumeUp</green>
+    </remote>
+  </FullscreenVideo>
 </keymap>
