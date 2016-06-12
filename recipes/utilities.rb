@@ -2,7 +2,7 @@
 # Cookbook Name:: osmc
 # Recipe:: utilities
 #
-%w(usbutils alsa-utils).each do |pkg|
+%w(usbutils alsa-utils pulseaudio).each do |pkg|
   package pkg do
     action :install
   end
