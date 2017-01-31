@@ -32,4 +32,9 @@ cookbook_file 'sshd_config' do
   group 'root'
   mode '0644'
   action :create
+  notifies :reload, "service[sshd]", :delayed
+end
+
+service 'sshd' do
+  action :nothing
 end
