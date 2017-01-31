@@ -17,3 +17,12 @@ file 'authorized_keys' do
   mode '0755'
   action :create
 end
+
+cookbook_file 'sshd_config' do
+  south 'sshd_config'
+  path '/etc/ssh/sshd_config'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  action :create
+end
