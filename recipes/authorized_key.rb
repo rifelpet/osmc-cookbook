@@ -2,6 +2,13 @@
 # Cookbook Name:: osmc
 # Recipe:: authorized_key
 #
+directory '/home/osmc' do
+  owner 'osmc'
+  group 'osmc'
+  mode '0770'
+  action :create
+end
+
 directory '/home/osmc/.ssh' do
   owner 'osmc'
   group 'osmc'
@@ -19,7 +26,7 @@ file 'authorized_keys' do
 end
 
 cookbook_file 'sshd_config' do
-  south 'sshd_config'
+  source 'sshd_config'
   path '/etc/ssh/sshd_config'
   owner 'root'
   group 'root'
